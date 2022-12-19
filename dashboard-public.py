@@ -182,14 +182,16 @@ def main():
         value=f'€ {round(((df1.GJ.mean())*47.38), 2)}')
 
     kpi3.metric(
-        label=f"Verbruik op {(df1['Datum'].iloc[-1]).strftime('%d-%m-%Y')}",
+        label=f"Verbruik op **{(df1['Datum'].iloc[-1]).strftime('%d-%m-%Y')}**",
         value=f'{round((df1.GJ.iloc[-1]), 2)} GJ',
-        delta=round((df1['GJ'].iloc[-1])-(df1.GJ.mean()),2))
+        delta=round((df1['GJ'].iloc[-1])-(df1.GJ.mean()),2).
+        delta_color='inverse')
 
     kpi4.metric(
-        label=f"Kosten op {(df1['Datum'].iloc[-1])} 💰",
+        label=f"Kosten op **{(df1['Datum'].iloc[-1]).strftime('%d-%m-%Y')}**",
         value=f'€ {round(((df1.GJ.iloc[-1])*47.38), 2)}',
-        delta=round(((df1['GJ'].iloc[-1])*47.38)-((df1.GJ.mean())*9.92),2))
+        delta=round(((df1['GJ'].iloc[-1])*47.38)-((df1.GJ.mean())*9.92),2),
+        delta_color='inverse')
     
     st.plotly_chart(fig1) 
     
