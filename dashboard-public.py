@@ -168,8 +168,31 @@ def main():
 #   Plots weergeven    
     st.header('Verbruik afgelopen week')
     st.dataframe(df_week_show_st)
+    
     st.subheader('Verbruik stadsverwarming')
+    
+    kpi1, kpi2, kpi3, kpi4 = st.columns(4)
+
+    kpi1.metric(
+        label="Gemiddeld verbruik per dag",
+        value= f'{round((df1.GJ.mean()), 2)}')
+
+    kpi2.metric(
+        label="Gemiddelde kosten per dag 💰",
+        value=f'€ {round(((df1.GJ.mean())*9.92), 2)}')
+
+    kpi3.metric(
+        label=f"Verbruik op {(df1['Datum'].iloc[-1])} 🔥",
+        value=f'{round((df1.GJ.iloc[-1]), 2)} GJ',
+        delta=round((df1['GJ'].iloc[-1])-(df1.GJ.mean()),2))
+
+    kpi4.metric(
+        label=f"Kosten op {(df1['Datum'].iloc[-1])} 💰",
+        value=f'€ {round(((df1.GJ.iloc[-1])*47.38), 2)}',
+        delta=round(((df1['GJ'].iloc[-1])*47.38)-((df1.GJ.mean())*9.92),2))
+    
     st.plotly_chart(fig1) 
+    
     st.subheader('Verbruik warm tap water')
     st.plotly_chart(fig2)
 
