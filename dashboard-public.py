@@ -175,14 +175,14 @@ def main():
 
     kpi1.metric(
         label="Gemiddeld verbruik per dag",
-        value= f'{round((df1.GJ.mean()), 2)}')
+        value= f'{round((df1.GJ.mean()), 2)} GJ')
 
     kpi2.metric(
-        label="Gemiddelde kosten per dag 💰",
-        value=f'€ {round(((df1.GJ.mean())*9.92), 2)}')
+        label="Gemiddelde kosten per dag",
+        value=f'€ {round(((df1.GJ.mean())*47.38), 2)}')
 
     kpi3.metric(
-        label=f"Verbruik op {(df1['Datum'].iloc[-1])} 🔥",
+        label=f"Verbruik op {(df1['Datum'].iloc[-1]).strftime(format='%d-%m-%y)}",
         value=f'{round((df1.GJ.iloc[-1]), 2)} GJ',
         delta=round((df1['GJ'].iloc[-1])-(df1.GJ.mean()),2))
 
