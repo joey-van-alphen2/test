@@ -182,13 +182,13 @@ def main():
         value=f'€ {round(((df1.GJ.mean())*47.38), 2)}')
 
     kpi3.metric(
-        label=f"Verbruik op **{(df1['Datum'].iloc[-1]).strftime('%d-%m-%Y')}**",
+        label=f"Verbruik op {(df1['Datum'].iloc[-1]).strftime('%d-%m-%Y')}",
         value=f'{round((df1.GJ.iloc[-1]), 2)} GJ',
         delta=round((df1['GJ'].iloc[-1])-(df1.GJ.mean()),2),
         delta_color='inverse')
 
     kpi4.metric(
-        label=f"Kosten op **{(df1['Datum'].iloc[-1]).strftime('%d-%m-%Y')}**",
+        label=f"Kosten op {(df1['Datum'].iloc[-1]).strftime('%d-%m-%Y')}",
         value=f'€ {round(((df1.GJ.iloc[-1])*47.38), 2)}',
         delta=round(((df1['GJ'].iloc[-1])*47.38)-((df1.GJ.mean())*9.92),2),
         delta_color='inverse')
@@ -196,6 +196,29 @@ def main():
     st.plotly_chart(fig1) 
     
     st.subheader('Verbruik warm tap water')
+    
+    kpi1, kpi2, kpi3, kpi4 = st.columns(4)
+
+    kpi1.metric(
+        label="Gemiddeld verbruik per dag",
+        value= f'{round((df1.m3.mean()), 2)} GJ')
+
+    kpi2.metric(
+        label="Gemiddelde kosten per dag",
+        value=f'€ {round(((df1.m3.mean())*9.92), 2)}')
+
+    kpi3.metric(
+        label=f"Verbruik op {(df1['Datum'].iloc[-1]).strftime('%d-%m-%Y')}",
+        value=f'{round((df1.m3.iloc[-1]), 2)} m3',
+        delta=round((df1['m3'].iloc[-1])-(df1.m3.mean()),2),
+        delta_color='inverse')
+
+    kpi4.metric(
+        label=f"Kosten op {(df1['Datum'].iloc[-1]).strftime('%d-%m-%Y')}",
+        value=f'€ {round(((df1.m3.iloc[-1])*9.92), 2)}',
+        delta=round(((df1['m3'].iloc[-1])*9.92)-((df1.m3.mean())*9.92),2),
+        delta_color='inverse')
+    
     st.plotly_chart(fig2)
 
 
