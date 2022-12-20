@@ -120,7 +120,7 @@ def main():
 
     fig1.update_yaxes(showticklabels=False, showgrid=False, secondary_y=True)
     fig1.update_yaxes(title_text="Verbruik in GJ", showticklabels=True, showgrid=True, secondary_y=False)
-    fig1.update_layout(height=400, width=700)
+    fig1.update_layout(height=500, width=800)
     
 #   Plot voor tap water
     fig2 = go.Figure()
