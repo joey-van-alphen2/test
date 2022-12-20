@@ -9,6 +9,7 @@ import streamlit as st
 import os
 import plotly.express as px
 import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 
 # In[4]:
@@ -60,22 +61,38 @@ def main():
     df_week = df1.groupby('Week')[['GJ','m3']].sum().reset_index()
     df_month = df1.groupby('Maand')[['GJ','m3']].sum().reset_index()
     df_year = df1.groupby('Jaar')[['GJ','m3']].sum().reset_index()
+#   Gemiddelde temperatuur per maand berekenen
+    df_temp = df1.groupby('Week')['Temperatuur'].mean().to_frame().reset_index()
+    df_temp['Temperatuur'] = df_temp['Temperatuur'].round(decimals=1)
 
 #   plot voor verwarming
-    fig1 = go.Figure()
 
+#   Create figure with secondary y-axis
+    fig1 = make_subplots(specs=[[{"secondary_y": True}]])
+
+#   Add Traces
     fig1.add_trace(
         go.Bar(x=df_week_show['Dag'],
-                   y=df_week_show['GJ'], texttemplate="%{y}", width=0.5))
+                   y=df_week_show['GJ'], texttemplate="%{y}", width=0.5, name='Verbruik'))
+    fig1.add_trace(
+        go.Scatter(x=df_week_show['Dag'],
+                   y=df_week_show['Temperatuur'], text=(round(df_week_show['Temperatuur'],0)), 
+                   name='Temperatuur', mode='lines+markers+text', textposition='top center',
+                   marker={'size': 8}), secondary_y=True,)
     fig1.add_trace(
         go.Bar(x=df_week['Week'],
                    y=df_week['GJ'], texttemplate="%{y}", width=0.5, visible=False))
     fig1.add_trace(
+        go.Scatter(x=df_temp['Week'],
+                   y=df_temp['Temperatuur'], text=df_temp['Temperatuur'], 
+                   name='Temperatuur', mode='lines+markers+text', textposition='top center',
+                   marker={'size': 8}, visible=False), secondary_y=True,)
+    fig1.add_trace(
         go.Bar(x=df_month['Maand'],
-                   y=df_month['GJ'], texttemplate="%{y}", width=0.5, visible=False))
+                   y=df_month['GJ'],visible=False, width=0.5))
     fig1.add_trace(
         go.Bar(x=df_year['Jaar'],
-                   y=df_year['GJ'], texttemplate="%{y}", width=0.5, visible=False))
+                   y=df_year['GJ'],visible=False))
 
     fig1.update_layout(
         updatemenus=[
@@ -88,20 +105,21 @@ def main():
                 buttons=list([
                     dict(label="Dag",
                          method="update",
-                         args=[{"visible": [True, False, False, False]}]),
+                         args=[{"visible": [True, True, False, False, False, False]}]),
                     dict(label="Week",
                          method="update",
-                         args=[{"visible": [False, True, False, False]}]),
+                         args=[{"visible": [False, False, True, True, False, False]}]),
                     dict(label="Maand",
                          method="update",
-                         args=[{"visible": [False, False, True, False]}]),
+                         args=[{"visible": [False, False, False, False, True, False]}]),
                     dict(label="Jaar",
                          method="update",
-                         args=[{"visible": [False, False, False, True]}])
+                         args=[{"visible": [False, False, False, False, False, True]}])
 
-                ]))])  
-    
-    fig1.update_yaxes(title_text="Verbruik in GJ")
+                ]))], dragmode='pan')  
+
+    fig1.update_yaxes(showticklabels=False, showgrid=False, secondary_y=True)
+    fig1.update_yaxes(title_text="Verbruik in GJ", showticklabels=True, showgrid=True, secondary_y=False)
     
 #   Plot voor tap water
     fig2 = go.Figure()
