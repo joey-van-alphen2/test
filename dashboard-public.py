@@ -76,12 +76,12 @@ def main():
                    y=df_week_show['GJ'], texttemplate="%{y}", width=0.5, name='Verbruik'))
     fig1.add_trace(
         go.Scatter(x=df_week_show['Dag'],
-                   y=df_week_show['Temperatuur'], text=(round(df_week_show['Temperatuur'],0)), 
+                   y=df_week_show['Temperatuur'], text=df_week_show['Temperatuur'], 
                    name='Temperatuur', mode='lines+markers+text', textposition='top center',
                    marker={'size': 8}), secondary_y=True,)
     fig1.add_trace(
         go.Bar(x=df_week['Week'],
-                   y=df_week['GJ'], texttemplate="%{y}", width=0.5, visible=False))
+                   y=df_week['GJ'], texttemplate="%{y}", width=0.5, visible=False, name='Verbruik'))
     fig1.add_trace(
         go.Scatter(x=df_temp['Week'],
                    y=df_temp['Temperatuur'], text=df_temp['Temperatuur'], 
