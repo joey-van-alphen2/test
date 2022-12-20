@@ -31,9 +31,10 @@ def main():
         add_col1 = st.date_input("Datum")
         add_col2 = st.number_input('Verwarming', min_value=0000.00, step=0000.01, value=df1['Verwarming'].iloc[-1], format='%f')
         add_col3 = st.number_input('Water', min_value=000.0, step=000.1, value=df1['Water'].iloc[-1], format='%f')
+        add_col4 = st.number_input('Temperatuur', step=1.0, value=df1['Temperatuur'].iloc[-1], format='%f')
         submit = st.form_submit_button('Submit')
         if submit:
-            new_data = {'Datum': add_col1, 'Verwarming': add_col2, 'Water': add_col3}
+            new_data = {'Datum': add_col1, 'Verwarming': add_col2, 'Water': add_col3, 'Temperatuur' : add_col4}
 
             df1 = df1.append(new_data, ignore_index=True)
             df1.to_csv('df1.csv', index=False)
