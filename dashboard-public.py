@@ -163,6 +163,7 @@ def main():
                 ]))])  
         
     fig2.update_yaxes(title_text="Verbruik in m3")
+    fig2.update_layout(height=500, width=800)
         
 #   4 kpi's maken 
     kpi1, kpi2, kpi3, kpi4 = st.columns(4)
