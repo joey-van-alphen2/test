@@ -22,14 +22,15 @@ def main():
     os.system("git config --global user.name 'joey-van-alphen2'")
     os.system("git config --global user.email 'joey.van.alphen@hva.nl'")
 
-    st.title('Verwarming en warm water verbruik')
+    st.title('Verwarming en warm tap water verbruik')
     df1 = pd.read_csv('df1.csv')
     
 #   Data invullen door gebruiker
     st.sidebar.header('Verbruik per datum')
     with st.sidebar.form(key='df1', clear_on_submit=True):
         add_col1 = st.date_input("Datum")
-        add_col2 = st.number_input('Verwarming', min_value=0000.00, step=0000.01, value=df1['Verwarming'].iloc[-1], format='%f')
+        #add_col2 = st.number_input('Verwarming', min_value=0000.00, step=0000.01, value=df1['Verwarming'].iloc[-1], format='%f')
+        add_col2 = st.number_input('Verwarming', min_value=df1['Verwarming'].iloc[-1], step=0.05, value=df1['Verwarming'].iloc[-1])#, format='%f')
         add_col3 = st.number_input('Water', min_value=000.0, step=000.1, value=df1['Water'].iloc[-1], format='%f')
         add_col4 = st.number_input('Temperatuur', step=1.0, value=df1['Temperatuur'].iloc[-1], format='%f')
         submit = st.form_submit_button('Submit')
@@ -43,13 +44,15 @@ def main():
 #   Data opslaan
     os.system("git add df1.csv")
     os.system('git commit -m "Updated CSV file"')
-    os.system("git push -u origin main")
+    os.system("git push origin master")
 
 #   Datum bruikbaar maken
     df1['Datum'] = pd.to_datetime(df1['Datum'], format='%Y-%m-%d')
 #   Verbruik uitrekenen
-    df1['GJ'] = df1.Verwarming.diff().fillna(0)
-    df1['m3'] = df1.Water.diff().fillna(0)
+    df1['GJ'] = df1.Verwarming.diff()
+    df1['m3'] = df1.Water.diff()
+#   nul-meting verwijderen zodat gemiddelde klopt
+    df1 = df1.iloc[1:]
 #   Datum splitsen
     df1['Jaar'] = df1.Datum.dt.year
     df1['Maand'] = df1.Datum.dt.strftime('%B')
@@ -58,12 +61,12 @@ def main():
 #   Omzetten naar datframe
     df_week_show = df1.tail(7)
     df_week_show_st = df_week_show[['Datum', 'Verwarming', 'Water', 'GJ', 'm3']]
-    df_week_show_st.columns = ['Datum', 'Meterstand Verwarming', 'Meterstand Tap Water', 'Verbruik Stadsverwarming in GJ', 'Verbruik Tap Water in m3']
-    df_week = df1.groupby('Week')[['GJ','m3']].sum().reset_index()
+    df_week_show_st.columns = ['Datum', 'Meterstand Verwarming', 'Meterstand Tap Water', 'Verbruik Stadsverwarming in GJ', 'Verbruik Warm Tap Water in m3']
+    df_week = df1.groupby('Week')[['GJ','m3']].sum().reset_index().tail(10)
     df_month = df1.groupby('Maand')[['GJ','m3']].sum().reset_index()
     df_year = df1.groupby('Jaar')[['GJ','m3']].sum().reset_index()
 #   Gemiddelde temperatuur per maand berekenen
-    df_temp = df1.groupby('Week')['Temperatuur'].mean().to_frame().reset_index()
+    df_temp = df1.groupby('Week')['Temperatuur'].mean().to_frame().reset_index().tail(10)
     df_temp['Temperatuur'] = df_temp['Temperatuur'].round(decimals=1)
 
 #   plot voor verwarming
@@ -74,25 +77,25 @@ def main():
 #   Add Traces
     fig1.add_trace(
         go.Bar(x=df_week_show['Dag'],
-                   y=df_week_show['GJ'], texttemplate="%{y}", width=0.5, name='Verbruik'))
+                   y=df_week_show['GJ'], texttemplate="%{y}", marker={'color': 'rgb(104, 92, 148)'}, width=0.5, name='Verbruik'))
     fig1.add_trace(
         go.Scatter(x=df_week_show['Dag'],
                    y=df_week_show['Temperatuur'], text=df_week_show['Temperatuur'], 
                    name='Temperatuur', mode='lines+markers+text', textposition='top center',
-                   marker={'size': 8}), secondary_y=True,)
+                   marker={'size': 8}, marker_color='rgb(124, 196, 139)'), secondary_y=True,)
     fig1.add_trace(
         go.Bar(x=df_week['Week'],
-                   y=df_week['GJ'], texttemplate="%{y}", width=0.5, visible=False, name='Verbruik'))
+                   y=df_week['GJ'], texttemplate="%{y}", marker={'color': 'rgb(104, 92, 148)'}, width=0.5, visible=False, name='Verbruik'))
     fig1.add_trace(
         go.Scatter(x=df_temp['Week'],
                    y=df_temp['Temperatuur'], text=df_temp['Temperatuur'], 
                    name='Temperatuur', mode='lines+markers+text', textposition='top center',
-                   marker={'size': 8}, visible=False), secondary_y=True,)
+                   marker={'size': 8}, marker_color='rgb(124, 196, 139)', visible=False), secondary_y=True,)
     fig1.add_trace(
-        go.Bar(x=df_month['Maand'],
+        go.Bar(x=df_month['Maand'], marker={'color': 'rgb(104, 92, 148)'},
                    y=df_month['GJ'],visible=False, width=0.5))
     fig1.add_trace(
-        go.Bar(x=df_year['Jaar'],
+        go.Bar(x=df_year['Jaar'], marker={'color': 'rgb(104, 92, 148)'},
                    y=df_year['GJ'],visible=False))
 
     fig1.update_layout(
@@ -127,16 +130,16 @@ def main():
     fig2 = go.Figure()
 
     fig2.add_trace(
-        go.Bar(x=df_week_show['Dag'],
+        go.Bar(x=df_week_show['Dag'], marker={'color': 'rgb(104, 92, 148)'},
                    y=df_week_show['m3'], texttemplate="%{y}", width=0.5))
     fig2.add_trace(
-        go.Bar(x=df_week['Week'],
+        go.Bar(x=df_week['Week'], marker={'color': 'rgb(104, 92, 148)'}, 
                    y=df_week['m3'], texttemplate="%{y}", width=0.5, visible=False))
     fig2.add_trace(
-        go.Bar(x=df_month['Maand'],
+        go.Bar(x=df_month['Maand'], marker={'color': 'rgb(104, 92, 148)'}, 
                    y=df_month['m3'], texttemplate="%{y}", width=0.5, visible=False))
     fig2.add_trace(
-        go.Bar(x=df_year['Jaar'],
+        go.Bar(x=df_year['Jaar'], marker={'color': 'rgb(104, 92, 148)'},
                    y=df_year['m3'], texttemplate="%{y}", width=0.5, visible=False))
 
     fig2.update_layout(
@@ -161,7 +164,7 @@ def main():
                          method="update",
                          args=[{"visible": [False, False, False, True]}])
 
-                ]))])  
+                ]))], dragmode='pan')  
         
     fig2.update_yaxes(title_text="Verbruik in m3")
     fig2.update_layout(height=500, width=730)
@@ -171,7 +174,7 @@ def main():
 
 #   kpi's waardes meegeven
     kpi1.metric(
-        label="Totaal verbruik (GJ) 🔥",
+        label="Totaal verbruik 🔥",
         value=f'{round(df1.GJ.sum(), 2)} GJ')
 
     kpi2.metric(
@@ -179,19 +182,18 @@ def main():
         value=f'€ {round((df1.GJ.sum()*47.38), 2)}')
 
     kpi3.metric(
-        label="Totaal verbruik (m3) 💧",
+        label="Totaal verbruik 💧",
         value= f'{round((df1.m3.sum()), 2)} m3')
     
     kpi4.metric(
         label="Kosten warm tap water 💰",
         value=f'€ {round((df1.m3.sum()*9.92), 2)}')
 
-#   Plots weergeven    
+#   Plots met kpi's weergeven    
     st.header('Verbruik afgelopen week')
     st.dataframe(df_week_show_st)
     
     st.subheader('Verbruik stadsverwarming')
-    
     kpi1, kpi2, kpi3, kpi4 = st.columns(4)
 
     kpi1.metric(
@@ -211,7 +213,7 @@ def main():
     kpi4.metric(
         label=f"Kosten op {(df1['Datum'].iloc[-1]).strftime('%d-%m-%Y')}",
         value=f'€ {round(((df1.GJ.iloc[-1])*47.38), 2)}',
-        delta=round(((df1['GJ'].iloc[-1])*47.38)-((df1.GJ.mean())*9.92),2),
+        delta=round(((df1['GJ'].iloc[-1])*47.38)-((df1.GJ.mean())*47.38),2),
         delta_color='inverse')
     
     st.plotly_chart(fig1) 
@@ -222,7 +224,7 @@ def main():
 
     kpi1.metric(
         label="Gemiddeld verbruik per dag",
-        value= f'{round((df1.m3.mean()), 2)} GJ')
+        value= f'{round((df1.m3.mean()), 2)} m3')
 
     kpi2.metric(
         label="Gemiddelde kosten per dag",
@@ -239,7 +241,7 @@ def main():
         value=f'€ {round(((df1.m3.iloc[-1])*9.92), 2)}',
         delta=round(((df1['m3'].iloc[-1])*9.92)-((df1.m3.mean())*9.92),2),
         delta_color='inverse')
-    
+
     st.plotly_chart(fig2)
 
 
