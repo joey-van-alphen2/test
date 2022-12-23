@@ -21,6 +21,7 @@ def main():
     
     os.system("git config --global user.name 'joey-van-alphen2'")
     os.system("git config --global user.email 'joey.van.alphen@hva.nl'")
+    os.system("git remote add origin 'https://github.com/joey-van-alphen2/test.git'")
 
     st.title('Verwarming en warm tap water verbruik')
     df1 = pd.read_csv('df1.csv')
@@ -44,7 +45,7 @@ def main():
 #   Data opslaan
     os.system("git add df1.csv")
     os.system('git commit -m "Updated CSV file"')
-    os.system("git push origin master")
+    os.system("git push origin main")
 
 #   Datum bruikbaar maken
     df1['Datum'] = pd.to_datetime(df1['Datum'], format='%Y-%m-%d')
