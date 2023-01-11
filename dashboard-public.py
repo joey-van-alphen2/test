@@ -256,12 +256,11 @@ def main():
     max_date_gj = df1.loc[max_index_gj, 'Datum'].strftime('%d-%m-%Y')
     max_temperatuur_gj = df1.loc[max_index_gj, 'Temperatuur']
     
+    if (df1.GJ.iloc[-1]) == (df1.GJ.max()):
+        st.balloons()
+        st.error('Oei, een nieuw record... Het hoogste verbruik tot nu toe')
+        
     st.markdown(f'Het record met het meeste verbruik in GJ was op {max_date_gj}')
-    
-    import unicodedata
-
-    # Get the degree symbol
-    degree_symbol = unicodedata.lookup("DEGREE SIGN")
 
     kpi1, kpi2, kpi3 = st.columns(3)
 
@@ -285,7 +284,7 @@ def main():
   
     if (df1.GJ.iloc[-1]) == (df1.GJ.min()):
         st.balloons()
-        st.success('Hoera, een nieuw record!')
+        st.success('Hoera, een nieuw record! Het laagste verbruik tot nu toe')
         
     st.markdown(f'Het record met het minste verbruik in GJ was op {min_date_gj}')
     
