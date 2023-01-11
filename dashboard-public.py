@@ -203,7 +203,7 @@ def main():
 
     kpi1.metric(
         label="Gemiddeld verbruik per dag",
-        value= f'{round((df1.GJ.mean()), 2)} GJ')
+        value= f'{round((df1.GJ.mean()), 3)} GJ')
 
     kpi2.metric(
         label="Gemiddelde kosten per dag",
@@ -211,8 +211,8 @@ def main():
 
     kpi3.metric(
         label=f"Verbruik op {(df1['Datum'].iloc[-1]).strftime('%d-%m-%Y')}",
-        value=f'{round((df1.GJ.iloc[-1]), 2)} GJ',
-        delta=round((df1['GJ'].iloc[-1])-(df1.GJ.mean()),2),
+        value=f'{round((df1.GJ.iloc[-1]), 3)} GJ',
+        delta=round((df1['GJ'].iloc[-1])-(df1.GJ.mean()),3),
         delta_color='inverse')
 
     kpi4.metric(
@@ -304,6 +304,9 @@ def main():
     
     if toon_data:
         st.dataframe(df1)
+        
+    if (df1.GJ.iloc[-1]) < (df1.GJ.min()):
+        st.balloons()
     
 if __name__ == '__main__':
     main()
