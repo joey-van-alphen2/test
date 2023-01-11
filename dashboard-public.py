@@ -307,6 +307,7 @@ def main():
         
     if (df1.GJ.iloc[-1]) == (df1.GJ.min()):
         st.balloons()
+        st.succes('Hoera, een nieuw record!')
     
 if __name__ == '__main__':
     main()
