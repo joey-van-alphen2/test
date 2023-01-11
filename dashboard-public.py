@@ -16,7 +16,7 @@ from plotly.subplots import make_subplots
 # In[4]:
 
 
-#   App Interface  
+#   App Interface   
     
 def main():
     
