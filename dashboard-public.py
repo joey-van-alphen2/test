@@ -5,6 +5,7 @@
 
 
 import pandas as pd
+import numpy as np
 import streamlit as st
 import os
 import plotly.express as px
@@ -21,7 +22,6 @@ def main():
     
     os.system("git config --global user.name 'joey-van-alphen2'")
     os.system("git config --global user.email 'joey.van.alphen@hva.nl'")
-    os.system("git remote add origin 'https://github.com/joey-van-alphen2/test.git'")
 
     st.title('Verwarming en warm tap water verbruik')
     df1 = pd.read_csv('df1.csv')
@@ -30,14 +30,12 @@ def main():
     st.sidebar.header('Verbruik per datum')
     with st.sidebar.form(key='df1', clear_on_submit=True):
         add_col1 = st.date_input("Datum")
-        #add_col2 = st.number_input('Verwarming', min_value=0000.00, step=0000.01, value=df1['Verwarming'].iloc[-1], format='%f')
-        add_col2 = st.number_input('Verwarming', min_value=df1['Verwarming'].iloc[-1], step=0.05, value=df1['Verwarming'].iloc[-1])#, format='%f')
-        add_col3 = st.number_input('Water', min_value=000.0, step=000.1, value=df1['Water'].iloc[-1], format='%f')
-        add_col4 = st.number_input('Temperatuur', step=1.0, value=df1['Temperatuur'].iloc[-1], format='%f')
+        add_col2 = st.number_input('Verwarming', min_value=df1['Verwarming'].iloc[-1], step=0.050, value=df1['Verwarming'].iloc[-1], format='%3.3f')
+        add_col3 = st.number_input('Water', min_value=df1['Water'].iloc[-1], step=0.1, value=df1['Water'].iloc[-1], format='%3.1f')
+        add_col4 = st.number_input('Temperatuur', step=1.0, value=df1['Temperatuur'].iloc[-1], format='%2.1f')
         submit = st.form_submit_button('Submit')
         if submit:
             new_data = {'Datum': add_col1, 'Verwarming': add_col2, 'Water': add_col3, 'Temperatuur' : add_col4}
-
             df1 = df1.append(new_data, ignore_index=True)
             df1.to_csv('df1.csv', index=False)
             st.success('Successvol toegevoegd!', icon="✅")    
@@ -59,19 +57,20 @@ def main():
     df1['Maand'] = df1.Datum.dt.strftime('%B')
     df1['Dag'] = df1.Datum.dt.strftime('%A')
     df1['Week'] = df1.Datum.dt.week
-#   Omzetten naar datframe
-    df_week_show = df1.tail(7).reset_index()
+    df1['Jaar'] = np.where((df1['Jaar']==2023)&(df1['Week']==52), 2022, df1['Jaar'])
+#   Omzetten naar dataframe
+    df_week_show = df1.tail(7)
     df_week_show_st = df_week_show[['Datum', 'Verwarming', 'Water', 'GJ', 'm3']]
     df_week_show_st.columns = ['Datum', 'Meterstand Verwarming', 'Meterstand Tap Water', 'Verbruik Stadsverwarming in GJ', 'Verbruik Warm Tap Water in m3']
-    df_week = df1.groupby('Week')[['GJ','m3']].sum().reset_index().tail(10)
+    df_week = df1.groupby(['Jaar','Week'])[['GJ','m3']].sum().reset_index().tail(10).sort_values(['Jaar','Week'])
     df_month = df1.groupby('Maand')[['GJ','m3']].sum().reset_index()
     df_year = df1.groupby('Jaar')[['GJ','m3']].sum().reset_index()
 #   Gemiddelde temperatuur per maand berekenen
-    df_temp = df1.groupby('Week')['Temperatuur'].mean().to_frame().reset_index().tail(10)
+    df_temp = df1.groupby(['Jaar','Week'])['Temperatuur'].mean().to_frame().reset_index().tail(10)
     df_temp['Temperatuur'] = df_temp['Temperatuur'].round(decimals=1)
 
 #   plot voor verwarming
-
+    
 #   Create figure with secondary y-axis
     fig1 = make_subplots(specs=[[{"secondary_y": True}]])
 
@@ -93,11 +92,11 @@ def main():
                    name='Temperatuur', mode='lines+markers+text', textposition='top center',
                    marker={'size': 8}, marker_color='rgb(124, 196, 139)', visible=False), secondary_y=True,)
     fig1.add_trace(
-        go.Bar(x=df_month['Maand'], marker={'color': 'rgb(104, 92, 148)'},
-                   y=df_month['GJ'],visible=False, width=0.5))
+        go.Bar(x=df_month['Maand'], texttemplate="%{y}", marker={'color': 'rgb(104, 92, 148)'},
+                   y=df_month['GJ'],visible=False, width=0.5, name='Verbruik'))
     fig1.add_trace(
-        go.Bar(x=df_year['Jaar'], marker={'color': 'rgb(104, 92, 148)'},
-                   y=df_year['GJ'],visible=False))
+        go.Bar(x=df_year['Jaar'], texttemplate="%{y}", marker={'color': 'rgb(104, 92, 148)'},
+                   y=df_year['GJ'], width=0.5, name='Verbruik', visible=False))
 
     fig1.update_layout(
         updatemenus=[
@@ -132,7 +131,7 @@ def main():
 
     fig2.add_trace(
         go.Bar(x=df_week_show['Dag'], marker={'color': 'rgb(104, 92, 148)'},
-                   y=df_week_show['m3'], texttemplate="%{y}", width=0.5))
+                   y=df_week_show['m3'], texttemplate="%{y}", width=0.5, visible=True))
     fig2.add_trace(
         go.Bar(x=df_week['Week'], marker={'color': 'rgb(104, 92, 148)'}, 
                    y=df_week['m3'], texttemplate="%{y}", width=0.5, visible=False))
@@ -170,7 +169,7 @@ def main():
     fig2.update_yaxes(title_text="Verbruik in m3")
     fig2.update_layout(height=500, width=730)
         
-#   4 kpi's maken b
+#   4 kpi's maken 
     kpi1, kpi2, kpi3, kpi4 = st.columns(4)
 
 #   kpi's waardes meegeven
@@ -244,8 +243,63 @@ def main():
         delta_color='inverse')
 
     st.plotly_chart(fig2)
+    
+    st.subheader('Records')
+    
+    # Haal de datum op uit de kolom met behulp van de bepaalde index
+    max_index_gj = df1['GJ'].idxmax()
+    max_date_gj = df1.loc[max_index_gj, 'Datum'].strftime('%d-%m-%Y')
+    max_temperatuur_gj = df1.loc[max_index_gj, 'Temperatuur']
+    
+    st.markdown(f'Het record met het meeste verbruik in GJ was op {max_date_gj}')
+    
+    import unicodedata
 
+    # Get the degree symbol
+    degree_symbol = unicodedata.lookup("DEGREE SIGN")
 
+    kpi1, kpi2, kpi3 = st.columns(3)
+
+    kpi1.metric(
+        label="Verbruik op die dag",
+        value= f'{round((df1.GJ.max()), 3)} GJ')
+
+    kpi2.metric(
+        label="Kosten op die dag",
+        value=f'€ {round((df1.GJ.max()*47.38), 2)}')
+
+    kpi3.metric(
+        label="Temperatuur op die dag",
+        value=f'{max_temperatuur_gj} {degree_symbol}C')
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    
+    min_index_gj = df1['GJ'].idxmin()
+    min_date_gj = df1.loc[min_index_gj, 'Datum'].strftime('%d-%m-%Y')
+    min_temperatuur_gj = df1.loc[min_index_gj, 'Temperatuur']    
+  
+    st.markdown(f'Het record met het minste verbruik in GJ was op {min_date_gj}')
+    
+    kpi1, kpi2, kpi3 = st.columns(3)
+
+    kpi1.metric(
+        label="Verbruik op die dag",
+        value= f'{round((df1.GJ.min()), 3)} GJ')
+
+    kpi2.metric(
+        label="Kosten op die dag",
+        value=f'€ {round((df1.GJ.min()*47.38), 2)}')
+
+    kpi3.metric(
+        label="Temperatuur op die dag",
+        value=f'{min_temperatuur_gj} {degree_symbol}C')
+  
+    
+    toon_data = st.checkbox('Toon alle data')
+    
+    if toon_data:
+        st.dataframe(df1)
+    
 if __name__ == '__main__':
     main()
 
