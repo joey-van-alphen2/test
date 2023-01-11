@@ -70,6 +70,11 @@ def main():
     df_temp['Temperatuur'] = df_temp['Temperatuur'].round(decimals=1)
 
 #   plot voor verwarming
+
+    import unicodedata
+
+    # Get the degree symbol
+    degree_symbol = unicodedata.lookup("DEGREE SIGN")
     
 #   Create figure with secondary y-axis
     fig1 = make_subplots(specs=[[{"secondary_y": True}]])
@@ -80,7 +85,7 @@ def main():
                    y=df_week_show['GJ'], texttemplate="%{y}", marker={'color': 'rgb(104, 92, 148)'}, width=0.5, name='Verbruik'))
     fig1.add_trace(
         go.Scatter(x=df_week_show['Dag'],
-                   y=df_week_show['Temperatuur'], text=df_week_show['Temperatuur'], 
+                   y=df_week_show['Temperatuur'], text=f'{df_week_show['Temperatuur']} {degree_symbol}C', 
                    name='Temperatuur', mode='lines+markers+text', textposition='top center',
                    marker={'size': 8}, marker_color='rgb(124, 196, 139)'), secondary_y=True,)
     fig1.add_trace(
