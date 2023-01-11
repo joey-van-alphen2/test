@@ -283,6 +283,10 @@ def main():
     min_date_gj = df1.loc[min_index_gj, 'Datum'].strftime('%d-%m-%Y')
     min_temperatuur_gj = df1.loc[min_index_gj, 'Temperatuur']    
   
+    if (df1.GJ.iloc[-1]) == (df1.GJ.min()):
+        st.balloons()
+        st.success('Hoera, een nieuw record!')
+        
     st.markdown(f'Het record met het minste verbruik in GJ was op {min_date_gj}')
     
     kpi1, kpi2, kpi3 = st.columns(3)
@@ -304,15 +308,7 @@ def main():
     
     if toon_data:
         st.dataframe(df1)
-        
-    if "balloons_displayed" not in st.get_state():
-        st.balloons()
-        st.set_state("balloons_displayed", True)
-        
-    if (df1.GJ.iloc[-1]) == (df1.GJ.min()):
-        st.balloons()
-        st.success('Hoera, een nieuw record!')
-    
+            
 if __name__ == '__main__':
     main()
 
