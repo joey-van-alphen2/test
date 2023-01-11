@@ -305,20 +305,9 @@ def main():
     if toon_data:
         st.dataframe(df1)
         
-    import json
-
-    def display_balloons():
+    if "balloons_displayed" not in st.get_state():
         st.balloons()
-
-    # check if balloons have been displayed before
-    if 'balloons_displayed' not in st.get_cookie_items():
-        display_balloons()
-        st.set_cookie('balloons_displayed', json.dumps(True))
-    else:
-        balloons_displayed = json.loads(st.get_cookie('balloons_displayed'))
-        if not balloons_displayed:
-            display_balloons()
-            st.set_cookie('balloons_displayed', json.dumps(True))
+        st.set_state("balloons_displayed", True)
         
     if (df1.GJ.iloc[-1]) == (df1.GJ.min()):
         st.balloons()
