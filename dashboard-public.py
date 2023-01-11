@@ -305,7 +305,7 @@ def main():
     if toon_data:
         st.dataframe(df1)
         
-    if (df1.GJ.iloc[-1]) < (df1.GJ.min()):
+    if (df1.GJ.iloc[-1]) == (df1.GJ.min()):
         st.balloons()
     
 if __name__ == '__main__':
