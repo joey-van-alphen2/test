@@ -305,6 +305,12 @@ def main():
     if toon_data:
         st.dataframe(df1)
         
+    balloon_displayed = False
+
+    if not balloon_displayed:
+        st.balloons()
+        balloon_displayed = True
+        
     if (df1.GJ.iloc[-1]) == (df1.GJ.min()):
         st.balloons()
         st.success('Hoera, een nieuw record!')
