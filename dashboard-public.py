@@ -85,8 +85,8 @@ def main():
                    y=df_week_show['GJ'], texttemplate="%{y}", marker={'color': 'rgb(104, 92, 148)'}, width=0.5, name='Verbruik'))
     fig1.add_trace(
         go.Scatter(x=df_week_show['Dag'],
-                   y=df_week_show['Temperatuur'], text=df_week_show.Temperatuur, 
-                   name='Temperatuur', mode='lines+markers+text', textposition='top center',
+                   y=df_week_show['Temperatuur'], text=df_temp['Temperatuur'],
+                   name=f'Temperatuur in {degree_symbol}C', mode='lines+markers+text', textposition='top center',
                    marker={'size': 8}, marker_color='rgb(124, 196, 139)'), secondary_y=True,)
     fig1.add_trace(
         go.Bar(x=df_week['Week'],
