@@ -261,7 +261,7 @@ def main():
         
     st.markdown(f'Het record met het meeste verbruik in GJ was op {max_date_gj}')
 
-    kpi1, kpi2, kpi3 = st.columns(3)
+    kpi1, kpi2, kpi3 = st.columns(3) 
 
     kpi1.metric(
         label="Verbruik op die dag",
