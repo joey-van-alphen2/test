@@ -253,10 +253,10 @@ def main():
 
     # Vraag om datum input
     selected_date = st.date_input("Selecteer een datum:")
-    selected_date.dt.strftime('%d-%m-%Y')
+    selected_date.strftime('%d-%m-%Y')
     
     # Zoek index van geselecteerde datum in df1
-    selected_row = df1[df1['Datum'].dt.strftime('%d-%m-%Y') == selected_date]
+    selected_row = df1[df1['Datum'].strftime('%d-%m-%Y') == selected_date]
 
     if selected_row.empty:
         st.error("Geen gegevens gevonden voor de geselecteerde datum.")
