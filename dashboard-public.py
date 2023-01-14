@@ -179,6 +179,7 @@ def main():
     
     
     col1, col2 = st.columns(2)
+    kpi1, kpi2, kpi3, kpi4 = st.columns(4)
     time_period = col1.selectbox("Select time period:", ["Total", "Monthly", "Weekly", "Yearly"], key='Total')
     if time_period == "Total":
         kpi1.metric(
