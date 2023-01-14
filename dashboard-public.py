@@ -253,10 +253,11 @@ def main():
 
     # Vraag om datum input
     selected_date = st.date_input("Selecteer een datum:")
-    selected_date
+    selected_date.dt.strftime('%d-%m-%Y')
+    
     # Zoek index van geselecteerde datum in df1
-    selected_row = df1[df1['Datum'] == selected_date]
-# .dt.strftime('%d-%m-%Y')
+    selected_row = df1[df1['Datum'].dt.strftime('%d-%m-%Y') == selected_date]
+
     if selected_row.empty:
         st.error("Geen gegevens gevonden voor de geselecteerde datum.")
     else:
@@ -288,7 +289,7 @@ def main():
     selected_date = st.date_input("Selecteer een datum:")
 
     # Zoek index van geselecteerde datum in df1
-    selected_index = df1[df1['Datum'] == selected_date].index[0]
+    selected_index = df1[df1['Datum'].dt.strftime('%d-%m-%Y') == selected_date].index[0]
 #.dt.strftime('%d-%m-%Y')
     # Maak gebruik van de geselecteerde index om de metrics voor die datum te tonen
     kpi1, kpi2, kpi3 = st.columns(3)
