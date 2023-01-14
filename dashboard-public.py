@@ -175,7 +175,7 @@ def main():
     fig2.update_layout(height=500, width=730)
         
 #   4 kpi's maken 
-    kpi1, kpi2, kpi3, kpi4 = st.columns(4)
+    
     
     
     col1, col2 = st.columns(2)
@@ -183,7 +183,8 @@ def main():
     if time_period == "Monthly":
         months = df1["Maand"].unique()
         selected_month = col2.selectbox("Select a month:", months)
-        st.markdown('statistieken in {selected_month}')
+        st.markdown(f'statistieken in {selected_month}')
+        kpi1, kpi2, kpi3, kpi4 = st.columns(4)
         kpi1.metric(
             label="Totaal verbruik 🔥 in " + selected_month,
             value=f'{round(df1[df1["Maand"] == selected_month].GJ.sum(), 2)} GJ')
