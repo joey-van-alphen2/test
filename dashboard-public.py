@@ -179,7 +179,7 @@ def main():
     
     
     col1, col2 = st.columns(2)
-    time_period = col1.selectbox("Select time period:", ["Total", "Monthly", "Weekly", "Yearly"])
+    time_period = col1.selectbox("Select time period:", ["Total", "Monthly", "Weekly", "Yearly"], default='Total')
     if time_period == "Monthly":
         months = df1["Maand"].unique()
         selected_month = col2.selectbox("Select a month:", months)
