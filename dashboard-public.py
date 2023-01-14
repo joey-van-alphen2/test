@@ -253,7 +253,7 @@ def main():
 
     # Voeg dropdown toe met datums uit de 'Datum' kolom van df1
     date_options = df1['Datum'].dt.strftime('%d-%m-%Y').tolist()
-    selected_date = st.selectbox("Selecteer een datum:", date_options)
+    selected_date = st.date_input("Selecteer een datum:")
 
     # Zoek index van geselecteerde datum in df1
     selected_index = df1[df1['Datum'].dt.strftime('%d-%m-%Y') == selected_date].index[0]
