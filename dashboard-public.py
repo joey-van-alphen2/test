@@ -294,7 +294,7 @@ def main():
     
     # Haal de datum op uit de kolom met behulp van de bepaalde index
     max_index_gj = df1['GJ'].idxmax()
-    max_date_gj = df1.loc[max_index_gj, 'Datum'].strftime('%d-%m-%Y')
+    max_date_gj = df1.loc[max_index_gj, 'Datum']
     max_temperatuur_gj = df1.loc[max_index_gj, 'Temperatuur']
     
     if (df1.GJ.iloc[-1]) == (df1.GJ.max()):
@@ -319,7 +319,7 @@ def main():
     st.markdown("<br>", unsafe_allow_html=True)
     
     min_index_gj = df1['GJ'].idxmin()
-    min_date_gj = df1.loc[min_index_gj, 'Datum'].strftime('%d-%m-%Y')
+    min_date_gj = df1.loc[min_index_gj, 'Datum']
     min_temperatuur_gj = df1.loc[min_index_gj, 'Temperatuur']    
   
     if (df1.GJ.iloc[-1]) == (df1.GJ.min()):
