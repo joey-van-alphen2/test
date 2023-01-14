@@ -183,8 +183,8 @@ def main():
     time_period = col1.selectbox("Selecteer overzicht type:", ["Totaal", "Maand", "Jaar"], key='Totaal')
     if time_period == "Totaal":
         kpi1.metric(
-        label="Totaal verbruik 🔥",
-        value=f'{round(df1.GJ.sum(), 2} GJ')
+            label="Totaal verbruik 🔥",
+            value=f'{round(df1.GJ.sum(), 2} GJ')
 
         kpi2.metric(
             label="Kosten verwarming 💰",
