@@ -253,7 +253,7 @@ def main():
 
     # Vraag om datum input
     selected_date = st.date_input("Selecteer een datum:")
-
+    selected_date
     # Zoek index van geselecteerde datum in df1
     selected_row = df1[df1['Datum'] == selected_date]
 # .dt.strftime('%d-%m-%Y')
