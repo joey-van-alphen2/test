@@ -249,6 +249,38 @@ def main():
 
     st.plotly_chart(fig2)
     
+    st.subheader('Statistieken per datum test')
+
+    # Vraag om datum input
+    selected_date = st.date_input("Selecteer een datum:")
+
+    # Zoek index van geselecteerde datum in df1
+    selected_row = df1[df1['Datum'].dt.strftime('%d-%m-%Y') == selected_date]
+
+    if selected_row.empty:
+        st.error("Geen gegevens gevonden voor de geselecteerde datum.")
+    else:
+        selected_index = selected_row.index[0]
+        # Maak gebruik van de geselecteerde index om de metrics voor die datum te tonen
+        kpi1, kpi2, kpi3 = st.columns(3)
+
+        kpi1.metric(
+            label=f"Verbruik op {selected_date}",
+            value=f'{round((df1.GJ.loc[selected_index]), 3)} GJ',
+            delta=round((df1['GJ'].loc[selected_index])-(df1.GJ.mean()),3),
+            delta_color='inverse')
+
+        kpi2.metric(
+            label=f"Kosten op {selected_date}",
+            value=f'€ {round(((df1.GJ.loc[selected_index])*47.38), 2)}',
+            delta=round(((df1['GJ'].loc[selected_index])*47.38)-((df1.GJ.mean())*47.38),2),
+            delta_color='inverse')
+
+        kpi3.metric(
+            label=f"Temperatuur op {selected_date}",
+            value=f'{df1.Temperatuur.loc[selected_index]} {degree_symbol}C')
+
+    
     st.subheader('Statistieken per datum')
 
     # Voeg dropdown toe met datums uit de 'Datum' kolom van df1
