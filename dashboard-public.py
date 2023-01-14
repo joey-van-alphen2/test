@@ -180,7 +180,7 @@ def main():
     
     col1, col2 = st.columns(2)
     time_period = col1.selectbox("Select time period:", ["Total", "Monthly", "Weekly", "Yearly"], default='Total')
-    if time_period == "Monthly":
+    if time_period == "Total":
         kpi1.metric(
         label="Totaal verbruik 🔥",
         value=f'{round(df1.GJ.sum(), 2)} GJ')
