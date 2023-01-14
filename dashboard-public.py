@@ -184,7 +184,7 @@ def main():
     if time_period == "Totaal":
         kpi1.metric(
         label="Totaal verbruik 🔥",
-        value=f'{round(df1.GJ.sum(), 2)} GJ')
+        value=f'{round(df1.GJ.sum(), 2} GJ')
 
         kpi2.metric(
             label="Kosten verwarming 💰",
@@ -200,29 +200,31 @@ def main():
     
     elif time_period == "Maand":
         months = df1["Maand"].unique()
-        selected_month = col2.selectbox("Select a month:", months)
-        st.markdown(f'statistieken in {selected_month}')
+        last_value = df1.iloc[-1]["Maand"]
+        selected_month = col2.selectbox("Selecteer een maand:", months, key=last_value)
+        st.markdown(f'Statistieken in {selected_month}')
         kpi1, kpi2, kpi3, kpi4 = st.columns(4)
         kpi1.metric(
-            label="Totaal verbruik 🔥 in " + selected_month,
+            label="Totaal verbruik 🔥",
             value=f'{round(df1[df1["Maand"] == selected_month].GJ.sum(), 2)} GJ')
 
         kpi2.metric(
-            label="Kosten verwarming 💰 in " + selected_month,
+            label="Kosten verwarming 💰" ,
             value=f'€ {round((df1[df1["Maand"] == selected_month].GJ.sum()*47.38), 2)}')
 
         kpi3.metric(
-            label="Totaal verbruik 💧 in " + selected_month,
+            label="Totaal verbruik 💧" ,
             value= f'{round((df1[df1["Maand"] == selected_month].m3.sum()), 2)} m3')
 
         kpi4.metric(
-            label="Kosten warm tap water 💰 in " + selected_month,
+            label="Kosten warm tap water 💰",
             value=f'€ {round((df1[df1["Maand"] == selected_month].m3.sum()*9.92), 2)}')
         
     elif time_period == "Jaar":
         years = df1["Jaar"].unique()
-        selected_year = col2.selectbox("Select a year:", years)
-        st.markdown(f'statistieken in {selected_year}')
+        last_value = df1.iloc[-1]["Jaar"]
+        selected_year = col2.selectbox("Selecteer een jaar:", years, key=last_value)
+        st.markdown(f'Statistieken in {selected_year}')
         kpi1, kpi2, kpi3, kpi4 = st.columns(4)
         kpi1.metric(
             label="Totaal verbruik 🔥",
