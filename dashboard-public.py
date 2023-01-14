@@ -264,7 +264,7 @@ def main():
     kpi1.metric(
         label=f"Verbruik op {selected_date}",
         value=f'{round((df1.GJ.loc[selected_index]), 3)} GJ',
-        delta=round((df1['GJ'].loc[selected_index])-(df1.GJ.mean()),2),
+        delta=round((df1['GJ'].loc[selected_index])-(df1.GJ.mean()),3),
         delta_color='inverse')
 
     kpi2.metric(
@@ -277,6 +277,7 @@ def main():
         label=f"Temperatuur op {selected_date}",
         value=f'{df1.Temperatuur.loc[selected_index]} {degree_symbol}C')
 
+    st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("<br>", unsafe_allow_html=True)
     
     st.subheader('Records')
