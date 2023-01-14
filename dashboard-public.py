@@ -182,7 +182,6 @@ def main():
     time_period = col1.selectbox("Select time period:", ["Total", "Monthly", "Weekly", "Yearly"])
     if time_period == "Monthly":
         months = df1["Maand"].unique()
-        col2.title("Select month")
         selected_month = col2.selectbox("Select a month:", months)
         st.markdown('statistieken in {selected_month}')
         kpi1.metric(
