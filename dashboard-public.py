@@ -176,6 +176,28 @@ def main():
         
 #   4 kpi's maken 
     kpi1, kpi2, kpi3, kpi4 = st.columns(4)
+    
+    time_period = st.selectbox("Select time period:", ["Total", "Monthly", "Weekly", "Yearly"])
+
+    if time_period == "Monthly":
+        months = df1["Maand"].unique()
+        selected_month = st.selectbox("Select a month:", months)
+        kpi1.metric(
+            label="Totaal verbruik 🔥 in " + selected_month,
+            value=f'{round(df1[df1["Maand"] == selected_month].GJ.sum(), 2)} GJ')
+
+        kpi2.metric(
+            label="Kosten verwarming 💰 in " + selected_month,
+            value=f'€ {round((df1[df1["Maand"] == selected_month].GJ.sum()*47.38), 2)}')
+
+        kpi3.metric(
+            label="Totaal verbruik 💧 in " + selected_month,
+            value= f'{round((df1[df1["Maand"] == selected_month].m3.sum()), 2)} m3')
+
+        kpi4.metric(
+            label="Kosten warm tap water 💰 in " + selected_month,
+            value=f'€ {round((df1[df1["Maand"] == selected_month].m3.sum()*9.92), 2)}')
+
 
 #   kpi's waardes meegeven
     kpi1.metric(
