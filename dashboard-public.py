@@ -275,9 +275,9 @@ def main():
     
     kpi3.metric(
         label=f"Temperatuur op {selected_date}",
-        value=f'df1.Temperatuur.loc[selected_index] {degree_symbol}C')
+        value=f'{df1.Temperatuur.loc[selected_index]} {degree_symbol}C')
 
-    
+    st.markdown("<br>", unsafe_allow_html=True)
     
     st.subheader('Records')
     
