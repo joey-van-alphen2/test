@@ -184,7 +184,7 @@ def main():
     if time_period == "Totaal":
         kpi1.metric(
             label="Totaal verbruik 🔥",
-            value=f'{round(df1.GJ.sum(), 2} GJ')
+            value=f'{round(df1.GJ.sum(), 2)} GJ')
 
         kpi2.metric(
             label="Kosten verwarming 💰",
