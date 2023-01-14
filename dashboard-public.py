@@ -201,7 +201,7 @@ def main():
     elif time_period == "Maand":
         months = df1["Maand"].unique()
         last_value = df1.iloc[-1]["Maand"]
-        selected_month = col2.selectbox("Selecteer een maand:", months, key=last_value)
+        selected_month = col2.selectbox("Selecteer een maand:", months, index=months.index(last_value))
         st.markdown(f'Statistieken in {selected_month}')
         kpi1, kpi2, kpi3, kpi4 = st.columns(4)
         kpi1.metric(
