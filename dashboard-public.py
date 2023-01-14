@@ -181,6 +181,23 @@ def main():
     col1, col2 = st.columns(2)
     time_period = col1.selectbox("Select time period:", ["Total", "Monthly", "Weekly", "Yearly"], default='Total')
     if time_period == "Monthly":
+        kpi1.metric(
+        label="Totaal verbruik 🔥",
+        value=f'{round(df1.GJ.sum(), 2)} GJ')
+
+    kpi2.metric(
+        label="Kosten verwarming 💰",
+        value=f'€ {round((df1.GJ.sum()*47.38), 2)}')
+
+    kpi3.metric(
+        label="Totaal verbruik 💧",
+        value= f'{round((df1.m3.sum()), 2)} m3')
+    
+    kpi4.metric(
+        label="Kosten warm tap water 💰",
+        value=f'€ {round((df1.m3.sum()*9.92), 2)}')
+    
+    elif time_period == "Monthly":
         months = df1["Maand"].unique()
         selected_month = col2.selectbox("Select a month:", months)
         st.markdown(f'statistieken in {selected_month}')
@@ -204,21 +221,7 @@ def main():
 
 
 #   kpi's waardes meegeven
-    kpi1.metric(
-        label="Totaal verbruik 🔥",
-        value=f'{round(df1.GJ.sum(), 2)} GJ')
-
-    kpi2.metric(
-        label="Kosten verwarming 💰",
-        value=f'€ {round((df1.GJ.sum()*47.38), 2)}')
-
-    kpi3.metric(
-        label="Totaal verbruik 💧",
-        value= f'{round((df1.m3.sum()), 2)} m3')
-    
-    kpi4.metric(
-        label="Kosten warm tap water 💰",
-        value=f'€ {round((df1.m3.sum()*9.92), 2)}')
+   
 
 #   Plots met kpi's weergeven    
     st.header('Verbruik afgelopen week')
