@@ -43,7 +43,7 @@ def main():
 #   Data opslaan
     os.system("git add df1.csv")
     os.system('git commit -m "Updated CSV file"')
-    os.system("git push origin main")
+    os.system("git push origin 'test'")
 
 #   Datum bruikbaar maken
     df1['Datum'] = pd.to_datetime(df1['Datum'], format='%Y-%m-%d')
