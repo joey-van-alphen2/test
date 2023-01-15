@@ -19,7 +19,7 @@ from plotly.subplots import make_subplots
 #   App Interface   
     
 def main():
-    
+    repo_name='test'
     os.system("git config --global user.name 'joey-van-alphen2'")
     os.system("git config --global user.email 'joey.van.alphen@hva.nl'")
 
@@ -43,7 +43,8 @@ def main():
 #   Data opslaan
     os.system("git add df1.csv")
     os.system('git commit -m "Updated CSV file"')
-    os.system("git push origin 'test'")
+    #os.system("git push origin 'test'")
+    os.system(f"git push origin {repo_name}")
 
 #   Datum bruikbaar maken
     df1['Datum'] = pd.to_datetime(df1['Datum'], format='%Y-%m-%d')
