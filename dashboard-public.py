@@ -41,7 +41,7 @@ def main():
             st.success('Successvol toegevoegd!', icon="✅")    
     
 #   Data opslaan
-    os.system("git add df1.csv")
+    os.system("git add 'df1.csv'")
     os.system('git commit -m "Updated CSV file"')
     #os.system("git push origin 'test'")
     os.system(f"git push origin {repo_name}")
