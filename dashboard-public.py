@@ -19,14 +19,19 @@ from plotly.subplots import make_subplots
 #   App Interface   
     
 def main():
-    repo_name='test'
-    os.system("git config --global user.name 'joey-van-alphen2'")
-    os.system("git config --global user.email 'joey.van.alphen@hva.nl'")
-    os.system("git remote set-url origin https://github.com/joey-van-alphen2/test.git")
+    
+    repo_url = "https://github.com/joey-van-alphen2/test.git"
+    os.system(f"git clone {repo_url}")
+
+    #repo_name='test'
+    #os.system("git config --global user.name 'joey-van-alphen2'")
+    #os.system("git config --global user.email 'joey.van.alphen@hva.nl'")
+    #os.system("git remote set-url origin https://github.com/joey-van-alphen2/test.git")
     #os.system("git remote add origin https://github.com/joey-van-alphen2/test.git")
+    #os.system("git clone https://github.com/joey-van-alphen2/test.git")
 
     st.title('Verwarming en warm tap water verbruik')
-    df1 = pd.read_csv('df1.csv')
+    df1 = pd.read_csv('myrepo/df1.csv')
     
 #   Data invullen door gebruiker
     st.sidebar.header('Verbruik per datum')
@@ -39,14 +44,19 @@ def main():
         if submit:
             new_data = {'Datum': add_col1, 'Verwarming': add_col2, 'Water': add_col3, 'Temperatuur' : add_col4}
             df1 = df1.append(new_data, ignore_index=True)
-            df1.to_csv('df1.csv', index=False)
+            df1.to_csv('myrepo/df1.csv', index=False)
             st.success('Successvol toegevoegd!', icon="✅")    
     
 #   Data opslaan
+    os.chdir("myrepo/")
     os.system("git add df1.csv")
-    os.system('git commit -m "Updated CSV file"')
-    #os.system("git push origin 'test'")
+    os.system('git commit -m "Added new data to df1.csv"')
     os.system("git push origin main")
+    
+    #os.system("git add df1.csv")
+    #os.system('git commit -m "Updated CSV file"')
+    #os.system("git push origin 'test'")
+    #os.system("git push origin main")
 
 #   Datum bruikbaar maken
     df1['Datum'] = pd.to_datetime(df1['Datum'], format='%Y-%m-%d')
