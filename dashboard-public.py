@@ -22,7 +22,8 @@ def main():
     repo_name='test'
     os.system("git config --global user.name 'joey-van-alphen2'")
     os.system("git config --global user.email 'joey.van.alphen@hva.nl'")
-    os.system("git remote add origin https://github.com/joey-van-alphen2/test.git")
+    os.system("git remote set-url origin https://github.com/joey-van-alphen2/test.git")
+    #os.system("git remote add origin https://github.com/joey-van-alphen2/test.git")
 
     st.title('Verwarming en warm tap water verbruik')
     df1 = pd.read_csv('df1.csv')
