@@ -19,7 +19,7 @@ from plotly.subplots import make_subplots
 #   App Interface   
     
 def main():
-    
+    os.chdir("myrepo/")
     repo_url = "https://github.com/joey-van-alphen2/test.git"
     os.system(f"git clone {repo_url}")
 
@@ -48,7 +48,7 @@ def main():
             st.success('Successvol toegevoegd!', icon="✅")    
     
 #   Data opslaan
-    os.chdir("myrepo/")
+
     os.system("git add df1.csv")
     os.system('git commit -m "Added new data to df1.csv"')
     os.system("git push origin main")
