@@ -97,7 +97,9 @@ def main():
         go.Scatter(x=df_week_show['Dag'],
                    y=df_week_show['Temperatuur'], text=df_week_show['Temperatuur'], 
                    name=f'Temperatuur in {degree_symbol}C', mode='lines+markers+text', textposition='top center',
-                   marker={'size': 8}, marker_color='rgb(124, 196, 139)'), secondary_y=True,)
+                   marker={'size': 8, 'color': 'rgb(16,174,219)', 'textfont': dict(color='black')},
+                   secondary_y=True,)
+                
     fig1.add_trace(
         go.Bar(x=df_week['Week'],
                    y=df_week['GJ'], texttemplate="%{y}", marker={'color': 'rgb(104, 92, 148)'}, width=0.5, visible=False, name='Verbruik'))
@@ -406,18 +408,7 @@ def main():
         
     
 
-    df = pd.DataFrame({
-        'x': [1, 2, 3, 4],
-        'y': [10, 20, 30, 40]
-    })
-    
-    colors = ['lightblue'] * (len(df) - 1) + ['red']
-    line_widths = [1] * (len(df) - 1) + [2]
-    line_dashes = ['solid'] * (len(df) - 1) + ['dash']
-    
-    fig = go.Figure(data=[go.Bar(x=df['x'], y=df['y'], marker=dict(color=colors, line=dict(width=line_widths, dash=line_dashes)))])
-    
-    st.plotly_chart(fig)
+
 
     
 if __name__ == '__main__':
