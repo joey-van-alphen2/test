@@ -13,7 +13,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
  
 
-# In[4]:
+# In[4]: 
 
 
 #   App Interface  
@@ -65,7 +65,7 @@ def main():
     df_week_show_st = df_week_show[['Datum', 'Verwarming', 'Water', 'Temperatuur']].astype(str)
     df_week_show_st.columns = ['Datum', 'Meterstand Verwarming', 'Meterstand Warm Tap Water', 'Gemiddelde Temperatuur']
 #   Verbruik per week naar dataframe
-    df_week = df1.groupby(['Jaar','Week'])[['GJ','m3']].sum().reset_index().tail(10).sort_values(['Jaar','Week'])
+    df_week = df1.groupby(['Jaar','Week'])[['GJ','m3']].sum().reset_index().tail(8).sort_values(['Jaar','Week'])
 #   Verbruik per maand naar dataframe
     df_month = df1.groupby('Maand')[['GJ','m3']].sum().reset_index()
     month_order = ['December', 'January', 'February']#, 'March', 'April', 'May']
@@ -74,7 +74,7 @@ def main():
 #   Verbruik per jaar naar dataframe
     df_year = df1.groupby('Jaar')[['GJ','m3']].sum().reset_index()
 #   Gemiddelde temperatuur per week berekenen
-    df_temp = df1.groupby(['Jaar','Week'])['Temperatuur'].mean().to_frame().reset_index().tail(10)
+    df_temp = df1.groupby(['Jaar','Week'])['Temperatuur'].mean().to_frame().reset_index().tail(8)
     df_temp['Temperatuur'] = df_temp['Temperatuur'].round(decimals=1)
 
 #   plot voor verwarming
@@ -86,33 +86,45 @@ def main():
     if df1.Temperatuur.iloc[-1] <= 0:
         st.snow() 
 
+#   Kleuren
+    #Eneco kleuren
+    #groen:124, 196, 139
+    #paars:104, 92, 148
+    
 #   Create figure with secondary y-axis
     fig1 = make_subplots(specs=[[{"secondary_y": True}]])
 
 #   Add Traces
     fig1.add_trace(
         go.Bar(x=df_week_show['Dag'],
-                   y=df_week_show['GJ'], texttemplate="%{y}", marker={'color': 'rgb(104, 92, 148)'}, width=0.5, name='Verbruik'))
+                   y=df_week_show['GJ'], texttemplate="%{y}", marker={'color': 'rgb(6,52,85)'}, width=0.5, name='Verbruik'))          
+    
     fig1.add_trace(
         go.Scatter(x=df_week_show['Dag'],
                    y=df_week_show['Temperatuur'], text=df_week_show['Temperatuur'], 
-                   name=f'Temperatuur in {degree_symbol}C', mode='lines+markers+text', textposition='top center', textfont = dict(color='black'),
+                   name=f'Temperatuur in {degree_symbol}C', mode='lines+markers+text', textposition='top center', textfont = dict(color='grey'),
                    marker={'size': 8, 'color': 'rgb(16,174,219)'}),
                    secondary_y=True,)
-                
+    
+    #fig1.add_trace(
+        #go.Scatter(x=df_week_show['Dag'],
+                   #y=df_week_show['Temperatuur'], text=df_week_show['Temperatuur'], 
+                   #name=f'Temperatuur in {degree_symbol}C', mode='lines+markers+text', textposition='top center',
+                   #marker={'size': 8}, marker_color='rgb(16,174,219)'), 
+                   #secondary_y=True,)
     fig1.add_trace(
         go.Bar(x=df_week['Week'],
-                   y=df_week['GJ'], texttemplate="%{y}", marker={'color': 'rgb(104, 92, 148)'}, width=0.5, visible=False, name='Verbruik'))
+                   y=df_week['GJ'], texttemplate="%{y}", marker={'color': 'rgb(6,52,85)'}, width=0.5, visible=False, name='Verbruik'))
     fig1.add_trace(
         go.Scatter(x=df_temp['Week'],
                    y=df_temp['Temperatuur'], text=df_temp['Temperatuur'], 
-                   name=f'Temperatuur in {degree_symbol}C', mode='lines+markers+text', textposition='top center',
-                   marker={'size': 8}, marker_color='rgb(124, 196, 139)', visible=False), secondary_y=True,)
+                   name=f'Temperatuur in {degree_symbol}C', mode='lines+markers+text', textposition='top center', textfont = dict(color='grey'),
+                   marker={'size': 8}, marker_color='rgb(16,174,219)', visible=False), secondary_y=True,)
     fig1.add_trace(
-        go.Bar(x=df_month['Maand'], texttemplate="%{y}", marker={'color': 'rgb(104, 92, 148)'},
+        go.Bar(x=df_month['Maand'], texttemplate="%{y}", marker={'color': 'rgb(6,52,85)'},
                    y=df_month['GJ'],visible=False, width=0.5, name='Verbruik'))
     fig1.add_trace(
-        go.Bar(x=df_year['Jaar'], texttemplate="%{y}", marker={'color': 'rgb(104, 92, 148)'},
+        go.Bar(x=df_year['Jaar'], texttemplate="%{y}", marker={'color': 'rgb(6,52,85)'},
                    y=df_year['GJ'], width=0.5, name='Verbruik', visible=False))
 
     fig1.update_layout(
@@ -144,19 +156,26 @@ def main():
     fig1.update_layout(height=500, width=800)
     
 #   Plot voor tap water
+
+    df_week['Week'] = df_week['Week'].astype(str)
+    df_week_show['Dag'] = df_week_show['Dag'].astype(str)
+    df_month['Maand'] = df_month['Maand'].astype(str)
+    df_year['Jaar'] = df_year['Jaar'].astype(str)
+    
+    
     fig2 = go.Figure()
 
     fig2.add_trace(
-        go.Bar(x=df_week_show['Dag'], marker={'color': 'rgb(104, 92, 148)'},
-                   y=df_week_show['m3'], texttemplate="%{y}", width=0.5, visible=True))
+        go.Bar(x=df_week_show['Dag'], marker={'color': 'rgb(6,52,85)'},
+                   y=df_week_show['m3'], texttemplate="%{y}", width=0.5, visible=False))
     fig2.add_trace(
-        go.Bar(x=df_week['Week'], marker={'color': 'rgb(104, 92, 148)'}, 
-                   y=df_week['m3'], texttemplate="%{y}", width=0.5, visible=False))
+        go.Bar(x=df_week['Week'], marker={'color': 'rgb(6,52,85)'}, 
+                   y=df_week['m3'], texttemplate="%{y}", width=0.5, visible=True))
     fig2.add_trace(
-        go.Bar(x=df_month['Maand'], marker={'color': 'rgb(104, 92, 148)'}, 
+        go.Bar(x=df_month['Maand'], marker={'color': 'rgb(6,52,85)'}, 
                    y=df_month['m3'], texttemplate="%{y}", width=0.5, visible=False))
     fig2.add_trace(
-        go.Bar(x=df_year['Jaar'], marker={'color': 'rgb(104, 92, 148)'},
+        go.Bar(x=df_year['Jaar'], marker={'color': 'rgb(6,52,85)'},
                    y=df_year['m3'], texttemplate="%{y}", width=0.5, visible=False))
 
     fig2.update_layout(
@@ -164,7 +183,7 @@ def main():
             dict(
                 type="buttons",
                 direction="right",
-                active=0,
+                active=1,
                 x=0.57,
                 y=1.2,
                 buttons=list([
@@ -270,7 +289,7 @@ def main():
     kpi3.metric(
         label=f"Verbruik op {(df1['Datum'].iloc[-1]).strftime('%d-%m-%Y')}",
         value=f'{round((df1.GJ.iloc[-1]), 3)} GJ',
-        delta=round((df1['GJ'].iloc[-1])-(df1.GJ.mean()),2),
+        delta=round((df1['GJ'].iloc[-1])-(df1.GJ.mean()),3),
         delta_color='inverse')
 
     kpi4.metric(
@@ -279,7 +298,7 @@ def main():
         delta=round(((df1['GJ'].iloc[-1])*47.38)-((df1.GJ.mean())*47.38),2),
         delta_color='inverse')
     
-    st.plotly_chart(fig1) 
+    st.plotly_chart(fig1, theme="streamlit") 
     
     st.subheader('Verbruik warm tap water')
     
@@ -305,7 +324,7 @@ def main():
         delta=round(((df1['m3'].iloc[-1])*9.92)-((df1.m3.mean())*9.92),2),
         delta_color='inverse')
 
-    st.plotly_chart(fig2)
+    st.plotly_chart(fig2, theme="streamlit")
     
     st.subheader('Statistieken per datum')
 
@@ -401,15 +420,10 @@ def main():
         value=f'{min_temperatuur_gj} {degree_symbol}C')
   
     
-    toon_data = st.checkbox('Toon alle data')
+    #toon_data = st.checkbox('Toon alle data')
     
-    if toon_data:
-        st.dataframe(df1)
-        
-    
-
-
-
+    #if toon_data:
+    #    st.dataframe(df1)
     
 if __name__ == '__main__':
     main()
