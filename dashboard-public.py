@@ -425,6 +425,12 @@ def main():
     #if toon_data:
     #    st.dataframe(df1)
     
+    st.download_button(
+    label="Export data to CSV",
+    data=df1,
+    file_name='warmte_water.csv',
+    mime='text/csv')
+    
 if __name__ == '__main__':
     main()
 
