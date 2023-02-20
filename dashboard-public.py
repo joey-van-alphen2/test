@@ -425,7 +425,11 @@ def main():
     #if toon_data:
     #    st.dataframe(df1)
     
-    selected_columns = st.multiselect('Selecteer kolommen', options=df1.columns)
+    df_week_show_st.columns = ['Datum', 'Meterstand Verwarming', 'Meterstand Warm Tap Water', 'Temperatuur', 'Verbruik_gj', 'Verbruik_m3', 'Jaar', 'Maand', 'Dag', 'Week']
+    
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.subheader('Data exporteren')
+    selected_columns = st.multiselect('Selecteer de gewenste kolommen', options=df1.columns)
 
     # filter dataframe op geselecteerde kolommen
     df_selected = df1[selected_columns]
@@ -433,8 +437,6 @@ def main():
     # converteer het gefilterde dataframe naar CSV-tekststring
     csv = df_selected.to_csv(index=False)
     
-
-
     st.download_button(
     label="Export data to CSV",
     data=csv,
