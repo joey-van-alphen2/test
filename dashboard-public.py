@@ -425,7 +425,7 @@ def main():
     #if toon_data:
     #    st.dataframe(df1)
     
-    df_week_show_st.columns = ['Datum', 'Meterstand Verwarming', 'Meterstand Warm Tap Water', 'Temperatuur', 'Verbruik_gj', 'Verbruik_m3', 'Jaar', 'Maand', 'Dag', 'Week']
+    df1.columns = ['Datum', 'Meterstand Verwarming', 'Meterstand Warm Tap Water', 'Temperatuur', 'Verbruik_gj', 'Verbruik_m3', 'Jaar', 'Maand', 'Dag', 'Week']
     
     st.markdown("<br>", unsafe_allow_html=True)
     st.subheader('Data exporteren')
