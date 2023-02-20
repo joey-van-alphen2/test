@@ -438,7 +438,7 @@ def main():
     csv = df_selected.to_csv(index=False)
     
     st.download_button(
-    label="Export data to CSV",
+    label="Exporteer naar CSV",
     data=csv,
     file_name='warmte_water.csv',
     mime='text/csv')
