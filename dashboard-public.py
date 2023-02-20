@@ -443,6 +443,8 @@ def main():
     file_name='warmte_water.csv',
     mime='text/csv')
     
+    df1
+    
 if __name__ == '__main__':
     main()
 
