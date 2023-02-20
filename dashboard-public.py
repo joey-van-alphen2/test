@@ -425,7 +425,15 @@ def main():
     #if toon_data:
     #    st.dataframe(df1)
     
-    csv = df1.to_csv(index=False)
+    selected_columns = st.multiselect('Selecteer kolommen', options=df1.columns)
+
+    # filter dataframe op geselecteerde kolommen
+    df_selected = df1[selected_columns]
+
+    # converteer het gefilterde dataframe naar CSV-tekststring
+    csv = df_selected.to_csv(index=False)
+    
+
 
     st.download_button(
     label="Export data to CSV",
