@@ -419,17 +419,21 @@ def main():
         label="Temperatuur op die dag",
         value=f'{min_temperatuur_gj} {degree_symbol}C')
   
+    st.markdown("<br>", unsafe_allow_html=True)
     
-    #toon_data = st.checkbox('Toon alle data')
+    st.subheader('Data exporteren')
     
-    #if toon_data:
-    #    st.dataframe(df1)
-    
+    df1['GJ'] = df1['GJ'].apply(lambda x: round(x, 3))
+    df1['m3'] = df1['m3'].apply(lambda x: round(x, 1))
+   
     df1.columns = ['Datum', 'Meterstand Verwarming', 'Meterstand Warm Tap Water', 'Temperatuur', 'Verbruik_gj', 'Verbruik_m3', 'Jaar', 'Maand', 'Dag', 'Week']
     
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.subheader('Data exporteren')
-    selected_columns = st.multiselect('Selecteer de gewenste kolommen', options=df1.columns)
+    # Kolommen selecteren met behulp van een multiselect widget
+    selected_columns = st.multiselect('Selecteer de gewenste kolommen:', options=['Alle kolommen'] + [col for col in df1.columns])
+
+    # Als "Alle" is geselecteerd, dan worden alle kolommen gekozen
+    if 'Alle kolommen' in selected_columns:
+        selected_columns = df1.columns
 
     # filter dataframe op geselecteerde kolommen
     df_selected = df1[selected_columns]
@@ -443,7 +447,10 @@ def main():
     file_name='warmte_water.csv',
     mime='text/csv')
     
-    df1
+    #toon_data = st.checkbox('Toon alle data')
+    
+    #if toon_data:
+        #st.dataframe(df1)
     
 if __name__ == '__main__':
     main()
