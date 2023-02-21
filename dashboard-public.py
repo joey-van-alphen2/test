@@ -251,7 +251,7 @@ def main():
     elif time_period == "Jaar":
         years = df1["Jaar"].unique()
         last_value = df1.iloc[-1]["Jaar"]
-        selected_year = col2.selectbox("Selecteer een jaar:", years)
+        selected_year = col2.selectbox("Selecteer een jaar:", years, index=[-1])
         st.markdown(f'Statistieken in {selected_year}')
         kpi1, kpi2, kpi3, kpi4 = st.columns(4)
         kpi1.metric(
