@@ -158,8 +158,8 @@ def main():
 #   Plot voor tap water
 
     #df_week['Week'] = df_week['Week'].astype(str)
-    #df_week_show['Dag'] = df_week_show['Dag'].astype(str)
-    #df_month['Maand'] = df_month['Maand'].astype(str)
+    df_week_show['Dag'] = df_week_show['Dag'].astype(str)
+    df_month['Maand'] = df_month['Maand'].astype(str)
     #df_year['Jaar'] = df_year['Jaar'].astype(str)
     
     
