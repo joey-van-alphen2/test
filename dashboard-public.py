@@ -217,7 +217,8 @@ def main():
     fig4.add_trace(
         go.Bar(x=df_week_show['Dag'],
                    y=df_week_show['GJ'], texttemplate="%{y}", marker={'color': 'rgb(6,52,85)'}, width=0.5, name='Verbruik'))          
-    
+    st.plotly_chart(fig3)
+    st.plotly_chart(fig4)
     #fig2.add_trace(
     #    go.Bar(x=df_week['Week'], marker={'color': 'rgb(6,52,85)'}, 
     #               y=df_week['m3'], texttemplate="%{y}", width=0.5, visible=True))
@@ -227,7 +228,7 @@ def main():
     #fig2.add_trace(
     #    go.Bar(x=df_year['Jaar'], marker={'color': 'rgb(6,52,85)'},
     #               y=df_year['m3'], texttemplate="%{y}", width=0.5, visible=False))
-    st.plotly_chart(fig3)    
+    
 #   4 kpi's maken 
     col1, col2 = st.columns(2)
     kpi1, kpi2, kpi3, kpi4 = st.columns(4)
