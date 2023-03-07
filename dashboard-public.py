@@ -324,7 +324,7 @@ def main():
         delta=round(((df1['m3'].iloc[-1])*9.92)-((df1.m3.mean())*9.92),2),
         delta_color='inverse')
 
-    st.plotly_chart(fig2, theme="streamlit")
+    st.plotly_chart(fig2, theme=None)
     
     st.subheader('Statistieken per datum')
 
