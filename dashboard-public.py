@@ -26,7 +26,7 @@ def main():
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-        'Get Help': 'joey0405@hotmail.com',
+        'Get Help': 'mailto:joey0405@hotmail.com',
         'Report a bug': "https://www.extremelycoolapp.com/bug",
         'About': "# This is a header. This is an *extremely* cool app!"
     }
