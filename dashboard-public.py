@@ -211,6 +211,13 @@ def main():
     fig3.add_trace(
         go.Bar(x=df_week_show['Dag'], marker={'color': 'rgb(6,52,85)'},
                    y=df_week_show['m3'], texttemplate="%{y}", width=0.5, visible=False))
+    
+    fig4 = go.Figure()
+
+    fig4.add_trace(
+        go.Bar(x=df_week_show['Dag'],
+                   y=df_week_show['GJ'], texttemplate="%{y}", marker={'color': 'rgb(6,52,85)'}, width=0.5, name='Verbruik'))          
+    
     #fig2.add_trace(
     #    go.Bar(x=df_week['Week'], marker={'color': 'rgb(6,52,85)'}, 
     #               y=df_week['m3'], texttemplate="%{y}", width=0.5, visible=True))
