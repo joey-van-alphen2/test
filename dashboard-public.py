@@ -28,7 +28,7 @@ def main():
     menu_items={
         'Get Help': 'mailto:joey0405@hotmail.com',
         'Report a bug': "mailto:joey0405@hotmail.com",
-        'About': "This is a header. This is an *extremely* cool app!"
+        'About': "Dashboard voor stadsverwarming en warm tap water vebruik"
     }
 )
     
