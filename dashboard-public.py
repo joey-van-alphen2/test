@@ -183,7 +183,7 @@ def main():
             dict(
                 type="buttons",
                 direction="right",
-                active=0,
+                active=1,
                 x=0.57,
                 y=1.2,
                 buttons=list([
@@ -204,31 +204,7 @@ def main():
         
     fig2.update_yaxes(title_text="Verbruik in m3")
     fig2.update_layout(height=500, width=730)
-    
-    
-    fig3 = go.Figure()
-
-    fig3.add_trace(
-        go.Bar(x=df_week_show['Dag'], marker={'color': 'rgb(6,52,85)'},
-                   y=df_week_show['m3'], texttemplate="%{y}", width=0.5))
-    
-    fig4 = go.Figure()
-
-    fig4.add_trace(
-        go.Bar(x=df_week_show['Dag'],
-                   y=df_week_show['GJ'], texttemplate="%{y}", marker={'color': 'rgb(6,52,85)'}, width=0.5, name='Verbruik'))          
-    st.plotly_chart(fig3)
-    st.plotly_chart(fig4)
-    #fig2.add_trace(
-    #    go.Bar(x=df_week['Week'], marker={'color': 'rgb(6,52,85)'}, 
-    #               y=df_week['m3'], texttemplate="%{y}", width=0.5, visible=True))
-    #fig2.add_trace(
-    #    go.Bar(x=df_month['Maand'], marker={'color': 'rgb(6,52,85)'}, 
-    #               y=df_month['m3'], texttemplate="%{y}", width=0.5, visible=False))
-    #fig2.add_trace(
-    #    go.Bar(x=df_year['Jaar'], marker={'color': 'rgb(6,52,85)'},
-    #               y=df_year['m3'], texttemplate="%{y}", width=0.5, visible=False))
-    
+        
 #   4 kpi's maken 
     col1, col2 = st.columns(2)
     kpi1, kpi2, kpi3, kpi4 = st.columns(4)
@@ -471,10 +447,10 @@ def main():
     file_name='warmte_water.csv',
     mime='text/csv')
     
-    toon_data = st.checkbox('Toon alle data')
+    #toon_data = st.checkbox('Toon alle data')
     
-    if toon_data:
-        st.dataframe(df1)
+    #if toon_data:
+        #st.dataframe(df1)
     
 if __name__ == '__main__':
     main()
