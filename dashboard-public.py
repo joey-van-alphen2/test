@@ -23,8 +23,6 @@ def main():
     st.set_page_config(
     page_title="test dashboard",
     page_icon="🏚️",
-    layout="wide",
-    initial_sidebar_state="expanded",
     menu_items={
         'Get Help': 'mailto:joey0405@hotmail.com',
         'Report a bug': "mailto:joey0405@hotmail.com",
