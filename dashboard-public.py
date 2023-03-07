@@ -27,7 +27,7 @@ def main():
     initial_sidebar_state="expanded",
     menu_items={
         'Get Help': 'mailto:joey0405@hotmail.com',
-        'Report a bug': "mailto:joey0405@hotmail.com",
+        'meld a bug': "mailto:joey0405@hotmail.com",
         'About': "### Dashboard voor Stadsverwarming en Warm Tap Water vebruik"
     }
 )
