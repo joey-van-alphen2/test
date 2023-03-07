@@ -210,7 +210,7 @@ def main():
 
     fig3.add_trace(
         go.Bar(x=df_week_show['Dag'], marker={'color': 'rgb(6,52,85)'},
-                   y=df_week_show['m3'], texttemplate="%{y}", width=0.5, visible=False))
+                   y=df_week_show['m3'], texttemplate="%{y}", width=0.5))
     
     fig4 = go.Figure()
 
