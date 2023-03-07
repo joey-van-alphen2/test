@@ -219,7 +219,7 @@ def main():
                    y=df_month['m3'], texttemplate="%{y}", width=0.5, visible=False))
     #fig2.add_trace(
      #   go.Bar(x=df_year['Jaar'], marker={'color': 'rgb(6,52,85)'},
-                   y=df_year['m3'], texttemplate="%{y}", width=0.5, visible=False))
+    #               y=df_year['m3'], texttemplate="%{y}", width=0.5, visible=False))
     st.plotly_chart(fig3)    
 #   4 kpi's maken 
     col1, col2 = st.columns(2)
