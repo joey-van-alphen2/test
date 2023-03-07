@@ -204,7 +204,23 @@ def main():
         
     fig2.update_yaxes(title_text="Verbruik in m3")
     fig2.update_layout(height=500, width=730)
-        
+    
+    
+    fig3 = go.Figure()
+
+    fig3.add_trace(
+        go.Bar(x=df_week_show['Dag'], marker={'color': 'rgb(6,52,85)'},
+                   y=df_week_show['m3'], texttemplate="%{y}", width=0.5, visible=False))
+    #fig2.add_trace(
+    #    go.Bar(x=df_week['Week'], marker={'color': 'rgb(6,52,85)'}, 
+                   y=df_week['m3'], texttemplate="%{y}", width=0.5, visible=True))
+    #fig2.add_trace(
+    #    go.Bar(x=df_month['Maand'], marker={'color': 'rgb(6,52,85)'}, 
+                   y=df_month['m3'], texttemplate="%{y}", width=0.5, visible=False))
+    #fig2.add_trace(
+     #   go.Bar(x=df_year['Jaar'], marker={'color': 'rgb(6,52,85)'},
+                   y=df_year['m3'], texttemplate="%{y}", width=0.5, visible=False))
+    st.plotly_chart(fig3)    
 #   4 kpi's maken 
     col1, col2 = st.columns(2)
     kpi1, kpi2, kpi3, kpi4 = st.columns(4)
