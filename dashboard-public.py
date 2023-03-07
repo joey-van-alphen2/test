@@ -21,7 +21,7 @@ from plotly.subplots import make_subplots
 def main():
     
     st.set_page_config(
-    page_title="test dashboard",
+    page_title="Test Dashboard",
     page_icon="🛠️",
     menu_items={
         'Get Help': 'mailto:joey0405@hotmail.com',
