@@ -68,7 +68,7 @@ def main():
     df_week = df1.groupby(['Jaar','Week'])[['GJ','m3']].sum().reset_index().tail(8).sort_values(['Jaar','Week'])
 #   Verbruik per maand naar dataframe
     df_month = df1.groupby('Maand')[['GJ','m3']].sum().reset_index()
-    month_order = ['December', 'January', 'February']#, 'March', 'April', 'May']
+    month_order = ['December', 'January', 'February', 'March', 'April', 'May']
     df_month['Maand'] = pd.Categorical(df_month['Maand'], categories=month_order, ordered=True)
     df_month = df_month.sort_values('Maand')
 #   Verbruik per jaar naar dataframe
