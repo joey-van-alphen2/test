@@ -229,7 +229,7 @@ def main():
     elif time_period == "Maand":
         months = df1["Maand"].unique()
         last_value = df1.iloc[-1]["Maand"]
-        selected_month = col2.selectbox("Selecteer een maand:", months, index=2)
+        selected_month = col2.selectbox("Selecteer een maand:", months, index=len(months)-1)
         st.markdown(f'Statistieken in {selected_month}')
         kpi1, kpi2, kpi3, kpi4 = st.columns(4)
         kpi1.metric(
@@ -251,7 +251,7 @@ def main():
     elif time_period == "Jaar":
         years = df1["Jaar"].unique()
         last_value = df1.iloc[-1]["Jaar"]
-        selected_year = col2.selectbox("Selecteer een jaar:", years, index=1)
+        selected_year = col2.selectbox("Selecteer een jaar:", years, index=len(years)-1)
         st.markdown(f'Statistieken in {selected_year}')
         kpi1, kpi2, kpi3, kpi4 = st.columns(4)
         kpi1.metric(
@@ -447,10 +447,10 @@ def main():
     file_name='warmte_water.csv',
     mime='text/csv')
     
-    #toon_data = st.checkbox('Toon alle data')
+    toon_data = st.checkbox('Toon alle data')
     
-    #if toon_data:
-        #st.dataframe(df1)
+    if toon_data:
+        st.dataframe(df1)
     
 if __name__ == '__main__':
     main()
