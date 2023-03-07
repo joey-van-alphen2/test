@@ -183,7 +183,7 @@ def main():
             dict(
                 type="buttons",
                 direction="right",
-                active=1,
+                active=0,
                 x=0.57,
                 y=1.2,
                 buttons=list([
