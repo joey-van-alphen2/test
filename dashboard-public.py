@@ -11,7 +11,7 @@ import os
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
- 
+   
 
 # In[4]: 
 
@@ -19,29 +19,29 @@ from plotly.subplots import make_subplots
 #   App Interface  
     
 def main():
-    
+ 
     st.set_page_config(
-    page_title="Test Dashboard",
-    page_icon="🛠️",
+    page_title="Dashboard Verbruik",
+    page_icon="📈",
     menu_items={
         'Get Help': 'mailto:joey0405@hotmail.com',
         'Report a bug': "mailto:joey0405@hotmail.com",
         'About': "### Dashboard voor Stadsverwarming en Warm Tap Water vebruik"
-    }
-)
-    
+        }
+    )
+  
     os.system("git config --global user.name 'joey-van-alphen2'")
     os.system("git config --global user.email 'joey.van.alphen@hva.nl'")
 
-    st.title('Verwarming en warm tap water verbruik')
+    st.title('Verwarming en Warm Tap Water Verbruik')
     df1 = pd.read_csv('df1.csv')
     
 #   Data invullen door gebruiker
-    st.sidebar.header('Verbruik per datum')
+    st.sidebar.header('Meterstanden invullen')
     with st.sidebar.form(key='df1', clear_on_submit=True):
         add_col1 = st.date_input("Datum")
         add_col2 = st.number_input('Verwarming', min_value=df1['Verwarming'].iloc[-1], step=0.050, value=df1['Verwarming'].iloc[-1], format='%3.3f')
-        add_col3 = st.number_input('Water', min_value=df1['Water'].iloc[-1], step=0.1, value=df1['Water'].iloc[-1], format='%3.1f')
+        add_col3 = st.number_input('Warm Tap Water', min_value=df1['Water'].iloc[-1], step=0.1, value=df1['Water'].iloc[-1], format='%3.1f')
         add_col4 = st.number_input('Temperatuur', step=1.0, value=df1['Temperatuur'].iloc[-1], format='%2.1f')
         submit = st.form_submit_button('Submit')
         if submit:
@@ -66,7 +66,7 @@ def main():
     df1['Jaar'] = df1.Datum.dt.year
     df1['Maand'] = df1.Datum.dt.strftime('%B')
     df1['Dag'] = df1.Datum.dt.strftime('%A')
-    df1['Week'] = df1.Datum.dt.week
+    df1['Week'] = df1.Datum.dt.strftime('%U')
 #   2023 meting manipuleren
     df1['Jaar'] = np.where((df1['Jaar']==2023)&(df1['Week']==52), 2022, df1['Jaar'])
 #   Omzetten naar dataframe
@@ -78,7 +78,7 @@ def main():
     df_week = df1.groupby(['Jaar','Week'])[['GJ','m3']].sum().reset_index().tail(8).sort_values(['Jaar','Week'])
 #   Verbruik per maand naar dataframe
     df_month = df1.groupby('Maand')[['GJ','m3']].sum().reset_index()
-    month_order = ['December', 'January', 'February', 'March', 'April', 'May']
+    month_order = ['October','November','December', 'January', 'February', 'March', 'April', 'May']
     df_month['Maand'] = pd.Categorical(df_month['Maand'], categories=month_order, ordered=True)
     df_month = df_month.sort_values('Maand')
 #   Verbruik per jaar naar dataframe
@@ -93,8 +93,8 @@ def main():
     import unicodedata
     degree_symbol = unicodedata.lookup("DEGREE SIGN")
     
-    if df1.Temperatuur.iloc[-1] <= 0:
-        st.snow() 
+    #if df1.Temperatuur.iloc[-1] <= 0:
+        #st.snow() 
 
 #   Kleuren
     #Eneco kleuren
@@ -177,10 +177,10 @@ def main():
 
     fig2.add_trace(
         go.Bar(x=df_week_show['Dag'], marker={'color': 'rgb(6,52,85)'},
-                   y=df_week_show['m3'], texttemplate="%{y}", width=0.5, visible=False))
+                   y=df_week_show['m3'], texttemplate="%{y}", width=0.5, visible=True))
     fig2.add_trace(
         go.Bar(x=df_week['Week'], marker={'color': 'rgb(6,52,85)'}, 
-                   y=df_week['m3'], texttemplate="%{y}", width=0.5, visible=True))
+                   y=df_week['m3'], texttemplate="%{y}", width=0.5, visible=False))
     fig2.add_trace(
         go.Bar(x=df_month['Maand'], marker={'color': 'rgb(6,52,85)'}, 
                    y=df_month['m3'], texttemplate="%{y}", width=0.5, visible=False))
@@ -193,7 +193,7 @@ def main():
             dict(
                 type="buttons",
                 direction="right",
-                active=1,
+                active=0,
                 x=0.57,
                 y=1.2,
                 buttons=list([
@@ -334,7 +334,7 @@ def main():
         delta=round(((df1['m3'].iloc[-1])*9.92)-((df1.m3.mean())*9.92),2),
         delta_color='inverse')
 
-    st.plotly_chart(fig2, theme='streamlit')
+    st.plotly_chart(fig2, theme="streamlit")
     
     st.subheader('Statistieken per datum')
 
@@ -385,6 +385,7 @@ def main():
     max_temperatuur_gj = df1.loc[max_index_gj, 'Temperatuur']
     
     if (df1.GJ.iloc[-1]) == (df1.GJ.max()):
+        st.snow()
         st.error('Oei, een nieuw record... Het hoogste verbruik tot nu toe:')
         
     st.markdown(f'Het record met het meeste verbruik in GJ was op {max_date_gj}')
@@ -405,9 +406,14 @@ def main():
     
     st.markdown("<br>", unsafe_allow_html=True)
     
-    min_index_gj = df1['GJ'].idxmin()
+    min_index_gj = df1[::-1]['GJ'].idxmin()
     min_date_gj = df1.loc[min_index_gj, 'Datum']
     min_temperatuur_gj = df1.loc[min_index_gj, 'Temperatuur']    
+
+    
+    #min_index_gj = df1['GJ'].idxmin()
+    #min_date_gj = df1.loc[min_index_gj, 'Datum']
+    #min_temperatuur_gj = df1.loc[min_index_gj, 'Temperatuur']    
   
     if (df1.GJ.iloc[-1]) == (df1.GJ.min()):
         st.balloons()
@@ -457,10 +463,10 @@ def main():
     file_name='warmte_water.csv',
     mime='text/csv')
     
-    #toon_data = st.checkbox('Toon alle data')
+    toon_data = st.checkbox('Toon alle data')
     
-    #if toon_data:
-        #st.dataframe(df1)
+    if toon_data:
+        st.dataframe(df1)
     
 if __name__ == '__main__':
     main()
